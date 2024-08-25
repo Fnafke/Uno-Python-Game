@@ -1,4 +1,5 @@
 from cards import Card, WildCard, NormalCard
+from player import Player
 import random
 
 
@@ -12,6 +13,9 @@ wildCards = []
 
 # The entire deck [108 cards]
 deckOfCards = []
+
+# List of players
+players = []
 
 
 def NormalCardCreation():
@@ -90,11 +94,45 @@ def combineAndShuffle():
 
     random.shuffle(deckOfCards)
 
+# Functions first checks if the full deck of cards still has enough cards for each player,
+# then it takes cards out of the full deck and distrubutes them to the player.
+
+
+def distribute_cards(number_of_cards):
+    if number_of_cards > len(deckOfCards):
+        raise ValueError(
+            "The number of cards per player X amount of players exceeds the amount of cards inside the deck.")
+
+    cards_for_player = []
+
+    for i in range(0, number_of_cards):
+        cards_for_player.append(deckOfCards.pop(i))
+
+    return cards_for_player
+
+
+def gameStart():
+    amount_Of_Players = int(
+        input("How many players do wish to participate?: "))
+    amount_Of_Cards_Per_Player = int(input("How many cards per player?: "))
+
+    for i in range(1, amount_Of_Players + 1):
+        player = Player(input(f"Enter the name of Player {i}: "))
+
+        player.cards(distribute_cards(amount_Of_Cards_Per_Player))
+
+        players.append(player)
+
+    print("Participants inside of the game are: ")
+    for player in players:
+        print(player.name)
+
 
 def main():
     NormalCardCreation()
     WildCardCreation()
     combineAndShuffle()
+    gameStart()
     # print(deckOfCards)
     # print(len(deckOfCards))
 
