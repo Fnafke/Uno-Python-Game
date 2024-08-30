@@ -32,3 +32,6 @@ class Player:
             self.__cards.remove(card)
         else:
             raise ValueError("Card does not exit within the deck")
+
+    def __str__(self):
+        return f"{self.__name}: {self.__cards}"

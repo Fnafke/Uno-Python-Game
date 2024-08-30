@@ -99,9 +99,12 @@ def combineAndShuffle():
 
 
 def distribute_cards(number_of_cards):
-    if number_of_cards > len(deckOfCards):
+
+    # len(deckOfCards) - 1 because index 0 is also counted as a card;
+    # Meaning the deck could have 12 cards but index 12 = 13th card
+    if number_of_cards > len(deckOfCards) - 1:
         raise ValueError(
-            "The number of cards per player X amount of players exceeds the amount of cards inside the deck.")
+            f"The number of cards per player X amount of players exceeds the amount of cards inside the deck.")
 
     cards_for_player = []
 
@@ -119,7 +122,7 @@ def gameStart():
     for i in range(1, amount_Of_Players + 1):
         player = Player(input(f"Enter the name of Player {i}: "))
 
-        player.cards(distribute_cards(amount_Of_Cards_Per_Player))
+        player.cards = distribute_cards(amount_Of_Cards_Per_Player)
 
         players.append(player)
 
@@ -133,7 +136,6 @@ def main():
     WildCardCreation()
     combineAndShuffle()
     gameStart()
-    # print(deckOfCards)
     # print(len(deckOfCards))
 
 
