@@ -87,6 +87,11 @@ class WildCard(Card):
             return self.__sign
         return f"{self.__color} {self.__sign}"
 
+    def __repr__(self):
+        if self.__sign.lower() in ["+4", "changecolor"]:
+            return self.__sign
+        return f"{self.__color} {self.__sign}"
+
 
 class NormalCard(Card):
     def __init__(self, sign, color):
@@ -126,4 +131,7 @@ class NormalCard(Card):
 
     def __str__(self):
         # return f"Type: {self.__type}, Sign: {self.__sign}, Color: {self.__color}"
+        return f"{self.__color} {self.__sign}"
+
+    def __repr__(self):
         return f"{self.__color} {self.__sign}"
