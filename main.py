@@ -205,7 +205,7 @@ def gameProgress():
                     for i in range(0, 4):
                         player.add_to_deck(deckOfCards.pop(i))
                     print(f"New deck is: {player.cards}")
-                    current_card = deckOfCards.pop(0)
+                    current_card = NormalCard(0, forced_color)
 
                 # if the player has a wild card or a card of the same color,
                 # then he has a card he can place, otherwise he must take a new card from the deck
@@ -226,13 +226,14 @@ def gameProgress():
                     print(
                         f"{player.name} has no cards to place. A new card has been automatically been added to their deck.")
 
-                    if new_card.color == current_card.color:
+                    if new_card.color != None and new_card.color == current_card.color:
                         picked_card = new_card
                     else:
                         player.add_to_deck(new_card)
                     break
 
-                index_card = int(input("Pick your card: "))
+                index_card = int(
+                    input(f"Pick your card between 1 - {len(player.cards)}: "))
                 while index_card > len(player.cards) or index_card < 1:
                     index_card = int(input(
                         "You can't pick a number that under 1 or that is higher than the amount of cards in the deck. Pick again!: "))
