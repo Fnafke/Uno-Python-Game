@@ -170,18 +170,20 @@ Starting card is...
 
 # This is the function that runs while the game itself is busy.
 def gameProgress():
+    global game_state
+    global current_card
+    global forced_color
 
     # Players are randomly shuffled so that the turns aren't dependent on which player got added first.
     random.shuffle(players)
 
-    global game_state
-    while game_state:
-        winner = None
+    winner = None
 
-        global current_card
-        global forced_color
+    while game_state:
+
         for player in players:
-            print(f"It's {player.name}'s turn")
+            print(f"""
+                  It's {player.name}'s turn""")
             print(f"Deck: {player.cards}")
             print(f"Forced color is: {forced_color}")
             print(f"Current card is: {current_card}")
@@ -190,13 +192,19 @@ def gameProgress():
             picked_card = None
 
             while picked_card == None:
+                if current_card.type == "Wild" and current_card.sign == "Block":
+                    print(f"{player.name}'s move has been blocked.")
+                    current_card = NormalCard("0", current_card.color)
+                    break
                 if current_card.type == "Wild" and current_card.sign == "+2":
                     for i in range(0, 2):
                         player.add_to_deck(deckOfCards.pop(i))
+                    print(f"New deck is: {player.cards}")
 
                 if current_card.type == "Wild" and current_card.sign == "+4":
                     for i in range(0, 4):
                         player.add_to_deck(deckOfCards.pop(i))
+                    print(f"New deck is: {player.cards}")
                     current_card = deckOfCards.pop(0)
 
                 # if the player has a wild card or a card of the same color,
@@ -220,7 +228,6 @@ def gameProgress():
 
                     if new_card.color == current_card.color:
                         picked_card = new_card
-                        has_card = True
                     else:
                         player.add_to_deck(new_card)
                     break
@@ -240,14 +247,15 @@ def gameProgress():
                             index_card = int(
                                 input("You can't pick this card! Try Again: "))
 
-                    if player.cards[index_card-1].color == current_card.color:
+                    elif player.cards[index_card-1].color == current_card.color:
                         card_checked = True
                         break
-                    if player.cards[index_card-1].type == "Wild" and player.cards[index_card-1].color == None:
+                    elif player.cards[index_card-1].type == "Wild" and player.cards[index_card-1].color == None:
                         card_checked = True
                         break
-                    index_card = int(
-                        input("You can't pick this card! Try Again: "))
+                    else:
+                        index_card = int(
+                            input("You can't pick this card! Try Again: "))
 
                 player_card = player.cards[index_card - 1]
                 player.remove_from_deck(player_card)
@@ -259,7 +267,7 @@ def gameProgress():
 
                 if len(player.cards) == 0:
                     winner = player.name
-
+                    break
                 picked_card = player_card
 
             if picked_card != None:
@@ -267,7 +275,10 @@ def gameProgress():
 
             print(f"Current card is: {current_card}")
             if winner != None:
-                break
+                game_state = False
+    print(f"""
+          The winner of this game is: {winner}
+""")
 
 
 def main():
