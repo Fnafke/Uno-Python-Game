@@ -194,7 +194,7 @@ def gameProgress():
             while picked_card == None:
                 if current_card.type == "Wild" and current_card.sign == "Block":
                     print(f"{player.name}'s move has been blocked.")
-                    current_card = NormalCard("0", current_card.color)
+                    current_card = NormalCard(0, current_card.color)
                     break
                 if current_card.type == "Wild" and current_card.sign == "+2":
                     for i in range(0, 2):
@@ -276,6 +276,7 @@ def gameProgress():
             print(f"Current card is: {current_card}")
             if winner != None:
                 game_state = False
+                break
     print(f"""
           The winner of this game is: {winner}
 """)
